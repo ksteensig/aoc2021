@@ -11,9 +11,9 @@ main = do
 
 differences fs = zipWith (-) fs $ tail fs
 
-windows n = Data.List.transpose . take n . tails
+windows n = map sum . Data.List.transpose . take n . tails
 
 part1 = length . filter (< 0) . differences
 
-part2 = part1 . map sum . windows 3
+part2 = part1 . windows 3
 
