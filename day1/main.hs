@@ -17,7 +17,7 @@ readInt = read
 
 part1 = length . filter (< 0) . differences
 
-part2 = length . filter (< 0) . differences . map sum . windows 3
+part2 = part1 . map sum . windows 3
 
 differences fs = zipWith (-) fs (tail fs)
 windows n xs = Data.List.transpose (take n (tails xs))
