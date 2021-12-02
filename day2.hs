@@ -7,7 +7,13 @@ parseWord s = let x = words s in (head x, readInt . last $ x)
 
 parse = map parseWord . lines
 
-data Position = Position Int Int Int deriving Show
+type Depth = Int
+type Height = Int
+type Aim = Int
+data Position = Position Depth Height Aim
+
+instance Show Position where
+  show (Position d h a) = "Depth: " ++ show d ++ " - Height: " ++ show h ++ " - Aim: " ++ show a
 
 initialPos = Position 0 0 0
 
@@ -16,13 +22,14 @@ main = do
         print $ part1 list
         print $ part2 list initialPos
 
+directions = ["forward", "up", "down"]
 direction d = sum . map snd . filter ((==d) . fst)
 
 apply' = zipWith ($)
 
 part1 list = Position f (d-u) 0
     where
-        [f,u,d] = map ($ list) $ apply' [direction, direction, direction] ["forward", "up", "down"]
+        [f,u,d] = map ($ list) $ apply' [direction, direction, direction] directions
 
 transform ("forward", x) (Position d h a) = Position (d + x*a) (h+x) a
 transform ("up", x) (Position d h a)      = Position d h (a-x)
