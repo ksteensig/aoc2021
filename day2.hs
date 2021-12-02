@@ -1,11 +1,17 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-import Data.List ( tails, transpose )
+import Data.List ( tails, transpose, foldl' )
 import AOC2021 ( load, readInt )
-import Data.Bifunctor (bimap)
 
-parseWord s = let x = words s in (head x, readInt . last $ x)
+data Direction = Forward Int | Up Int | Down Int
 
-parse = map parseWord . lines
+strToDirection "forward" x = Forward x
+strToDirection "up" x      = Up x
+strToDirection "down" x    = Down x
+
+parseDirection :: [String] -> Direction
+parseDirection [s, x] = strToDirection s $ readInt x
+
+parse = map (parseDirection . words) . lines
 
 type Depth = Int
 type Height = Int
@@ -15,25 +21,20 @@ data Position = Position Depth Height Aim
 instance Show Position where
   show (Position d h a) = "Depth: " ++ show d ++ " - Height: " ++ show h ++ " - Aim: " ++ show a
 
-initialPos = Position 0 0 0
+initial = Position 0 0 0
 
 main = do
         list <- load parse "data/day2"
         print $ part1 list
-        print $ part2 list initialPos
+        print $ part2 list
 
-directions = ["forward", "up", "down"]
-direction d = sum . map snd . filter ((==d) . fst)
+part1transform (Position d h a) (Forward x)  = Position d (h+x) a
+part1transform (Position d h a) (Up x)       = Position (d-x) h a
+part1transform (Position d h a) (Down x)     = Position (d+x) h a
 
-apply' = zipWith ($)
+part2transform (Position d h a) (Forward x)  = Position (d + x*a) (h+x) a
+part2transform (Position d h a) (Up x)       = Position d h (a-x)
+part2transform (Position d h a) (Down x)     = Position d h (a+x)
 
-part1 list = Position f (d-u) 0
-    where
-        [f,u,d] = map ($ list) $ apply' [direction, direction, direction] directions
-
-transform ("forward", x) (Position d h a) = Position (d + x*a) (h+x) a
-transform ("up", x) (Position d h a)      = Position d h (a-x)
-transform ("down", x) (Position d h a)    = Position d h (a+x)
-
-part2 [x] (Position d h a) = transform x (Position d h a)
-part2 (x:xs) (Position d h a) = part2 xs $ transform x (Position d h a)
+part1 = foldl' part1transform initial
+part2 = foldl' part2transform initial

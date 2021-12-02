@@ -1,6 +1,6 @@
 import System.IO ( openFile )
 import Data.List ( tails, transpose )
-import AOC2021 ( load, readInt ) 
+import AOC2021 ( load, readInt )
 
 parse = map readInt . words
 
@@ -9,7 +9,7 @@ main = do
         print $ part1 list
         print $ part2 list
 
-differences fs = zipWith (-) fs $ tail fs
+differences fs = zipWith (-) (tail fs) fs
 
 windows n = map sum . Data.List.transpose . take n . tails
 
