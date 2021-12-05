@@ -26,9 +26,12 @@ calcColBit comp = fromEnum
 
 solve f' = map (concatMap show) . (<*>) f' . pure
 
-part1 = solve (map f [(<), (>)])
-        where f comp = map (calcColBit comp . pure)
-
+part1 = solve (map f [gamma, epsilon])
+        where
+                gamma = (<)
+                epsilon = (>)
+                f comp = map (calcColBit comp . pure)
+                
 part2 = solve (map f [oxygen, scrubber])
         where
                 oxygen = (<=)
