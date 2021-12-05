@@ -17,9 +17,10 @@ main = do
         print $ part1 list
         print $ part2 list
 
-activePoints' a b = if a <= b then [a..b] else [a,a-1..b]
+
 activePoints (Line (x1,y1) (x2,y2)) = take k (zip (cycle x) (cycle y))
         where
+                activePoints' a b = if a <= b then [a..b] else [a,a-1..b]
                 x = activePoints' x1 x2
                 y = activePoints' y1 y2
                 k = maximum [length x, length y]
