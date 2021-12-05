@@ -1,15 +1,9 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-import Data.List (transpose, tails, intercalate, group, sort)
+import Data.List (group, sort)
 import Data.List.Split (splitOn)
-import Data.Char(digitToInt)
 import AOC2021 ( load )
-import Control.Applicative ((<*>))
 import Data.List.Unique (uniq)
 import Control.Arrow ((&&&))
-import Debug.Trace (traceShowId)
 
 type Coordinate = (Int, Int)
 data Line = Line Coordinate Coordinate deriving Show
